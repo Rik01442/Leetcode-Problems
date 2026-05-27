@@ -1,2 +1,7 @@
-# Write your MySQL query statement below
-delete p1 from Person p1, person p2 where p1.email = p2.email and p1.id > p2.id;
+/* Write your T-SQL query statement below */
+
+WITH Dups AS (
+  SELECT *, ROW_NUMBER() OVER (PARTITION BY email ORDER BY id) AS rn
+  FROM Person
+)
+DELETE FROM Dups WHERE rn > 1;
